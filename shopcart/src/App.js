@@ -1,19 +1,18 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Product from './components/product.js'; 
+import Navbar from './components/navbar';
+import DisplayProducts from './components/displayProducts';
+import Cart from './components/cart';
+import products from './productData';
 
 class App extends Component {
   state = {
     cart: [],
-    products: [
-      { id: 1, desc: 'Unisex Cologne', image: './products/cologne.jpg', price: 35, value: 0 },
-      { id: 2, desc: 'Apple iWatch', image: './products/iwatch.jpg', price: 199, value: 0 },
-      { id: 3, desc: 'Unique Mug', image: './products/mug.jpg', price: 15, value: 0 },
-      { id: 4, desc: 'Mens Wallet', image: './products/wallet.jpg', price: 48, value: 0 }
-    ]
+    products: products,
+    showModal: false,
+    activeProduct: null
   };
 
   addToCart = (product) => {
@@ -22,25 +21,61 @@ class App extends Component {
     }));
   };
 
+  handleAdd = (productId) => {
+    const products = [...this.state.products];
+    const product = products.find(p => p.id === productId);
+    product.value++;
+    this.setState({ products });
+  };
+
+  handleSubtract = (productId) => {
+    const products = [...this.state.products];
+    const product = products.find(p => p.id === productId);
+    if (product.value > 0) {
+      product.value--;
+      this.setState({ products });
+    }
+  };
+
+  openModal = (product) => {
+    this.setState({ showModal: true, activeProduct: product });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false, activeProduct: null });
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Shop to React</h1>
-          <div>
-            <FontAwesomeIcon icon={faShoppingCart} />
-            <span> {this.state.cart.length} items</span>
-          </div>
-        </header>
-        <div className="container mt-3">
-          {this.state.products.map(product => (
-            <Product key={product.id} {...product} onAddToCart={() => this.addToCart(product)} />
-          ))}
+      <Router>
+        <div className="App">
+          <Navbar cartLength={this.state.cart.length} />
+          <Routes>
+            <Route path="/" element={
+              <DisplayProducts
+                products={this.state.products}
+                onAddToCart={this.addToCart}
+                onAdd={this.handleAdd}
+                onSubtract={this.handleSubtract}
+                openModal={this.openModal}
+              />
+            } />
+            <Route path="/cart" element={<Cart cartItems={this.state.cart} />} />
+          </Routes>
+          {this.state.showModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={this.closeModal}>&times;</span>
+                <img src={this.state.activeProduct.image} alt={this.state.activeProduct.desc} />
+                <div>{this.state.activeProduct.desc}</div>
+                <div>Ratings: {this.state.activeProduct.ratings}</div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </Router>
     );
   }
 }
 
 export default App;
-
