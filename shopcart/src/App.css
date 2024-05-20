@@ -1,83 +1,73 @@
 /* src/App.css */
 .App {
-  background-color: #ffffff; /* Light grey background for the app */
-  min-height: 100vh; /* Full height of the viewport */
-  padding-top: 20px; /* Padding at the top */
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-top: 20px;
 }
 
 .App-header {
-  background-color: #0ad9fd; /* Turquoise blue for the header */
+  background-color: #0ad9fd;
   color: rgb(0, 0, 0);
   padding: 10px 20px;
-  font-size: 18px; /* Larger font size for visibility */
+  font-size: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .cart-icon {
   display: flex;
   align-items: center;
-  font-size: 18px; /* Smaller font size for the cart items counter */
+  font-size: 18px;
 }
 
-
 .product {
-  background-color: white; /* White background for each product */
-  border-bottom: 1px solid #e1e1e1; /* Light grey border for separation */
-  padding: 20px; /* Padding around product content */
+  background-color: white;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space elements out */
+  justify-content: space-between;
 }
 
 .product img {
-  width: 100px; /* Fixed width for images */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 20px; /* Space between image and description */
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+  cursor: pointer;
 }
 
 .product-name {
-  flex-grow: 1; /* Allow name to fill the space */
-  margin-right: 20px; /* Space before the quantity box */
+  flex-grow: 1;
+  margin-right: 20px;
 }
 
 .product-price {
   font-weight: bold;
-  margin-right: 20px; /* Space before the quantity box */
+  margin-right: 20px;
 }
 
 .input-quantity {
-  width: 60px; /* Smaller width for quantity inputs */
+  width: 60px;
   text-align: center;
 }
 
-
-/* src/App.css */
-.modal {
+.btn-group {
   display: flex;
-  justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 4px;
-  position: relative;
+.btn {
+  margin: 0 5px;
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
+.modal-content img {
+  display: block;
+  margin: 0 auto;
+}
+
+.modal-body p {
+  text-align: center;
+  font-size: 1.2em;
 }
