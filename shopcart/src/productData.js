@@ -6,4 +6,5 @@ const products = [
   { id: 4, desc: 'Mens Wallet', image: './products/wallet.jpg', price: 48, value: 0, ratings: "4.3" }
 ];
 
+
 export default products;

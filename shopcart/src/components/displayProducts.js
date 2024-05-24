@@ -18,9 +18,18 @@ const DisplayProducts = ({ products, onAddToCart, onSubtract, onAdd, openModal }
         <Product
           key={product.id}
           {...product}
-          onAddToCart={() => onAddToCart(product)}
-          onAdd={() => onAdd(product.id)}
-          onSubtract={() => onSubtract(product.id)}
+          onAddToCart={() => {
+            console.log(`onAddToCart called for product ID: ${product.id}, Quantity: ${product.value}`);
+            onAddToCart(product);
+          }}
+          onAdd={() => {
+            console.log(`onAdd called for product ID: ${product.id}`);
+            onAdd(product.id);
+          }}
+          onSubtract={() => {
+            console.log(`onSubtract called for product ID: ${product.id}`);
+            onSubtract(product.id);
+          }}
           openModal={() => handleShow(product)}
         />
       ))}

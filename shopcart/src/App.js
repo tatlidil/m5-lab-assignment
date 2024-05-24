@@ -16,9 +16,29 @@ class App extends Component {
   };
 
   addToCart = (product) => {
-    this.setState(prevState => ({
-      cart: [...prevState.cart, product]
-    }));
+    console.log(`Adding to cart: ${product.desc}, Quantity: ${product.value}`);
+    this.setState(prevState => {
+      const cart = [...prevState.cart];
+      const itemIndex = cart.findIndex(item => item.id === product.id);
+      if (itemIndex > -1) {
+        // Increment the quantity by the selected value
+        cart[itemIndex].value += product.value;
+      } else {
+        // Add the product to the cart with the selected quantity
+        cart.push({ ...product });
+      }
+
+      // Reset the product value in the main product list
+      const products = prevState.products.map(p => {
+        if (p.id === product.id) {
+          return { ...p, value: 0 }; // Reset value to 0 after adding to cart
+        }
+        return p;
+      });
+
+      console.log('Updated Cart:', cart);
+      return { cart, products };
+    });
   };
 
   handleAdd = (productId) => {
@@ -46,10 +66,13 @@ class App extends Component {
   };
 
   render() {
+    // Calculate the total quantity of items in the cart
+    const cartLength = this.state.cart.reduce((acc, item) => acc + item.value, 0);
+
     return (
       <Router>
         <div className="App">
-          <Navbar cartLength={this.state.cart.length} />
+          <Navbar cartLength={cartLength} />
           <Routes>
             <Route path="/" element={
               <DisplayProducts

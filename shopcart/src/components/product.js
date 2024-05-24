@@ -17,7 +17,15 @@ const Product = ({ image, desc, price, onAddToCart, value, onAdd, onSubtract, op
       </div>
     </div>
     <div className="col-md-3">
-      <button className="btn btn-primary mt-2" onClick={onAddToCart}>Add to Cart</button>
+      <button 
+        className="btn btn-primary mt-2" 
+        onClick={() => {
+          console.log(`Adding product to cart: ${desc}, Quantity: ${value}`);
+          onAddToCart();
+        }}
+      >
+        Add to Cart
+      </button>
     </div>
   </div>
 );
