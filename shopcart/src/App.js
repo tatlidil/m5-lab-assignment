@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from './components/navbar';
 import DisplayProducts from './components/displayProducts';
 import Cart from './components/cart';
+import SignIn from './components/SignIn';
+import Checkout from './components/Checkout';
 import products from './productData';
 
 class App extends Component {
@@ -12,31 +14,27 @@ class App extends Component {
     cart: [],
     products: products,
     showModal: false,
-    activeProduct: null
+    activeProduct: null,
+    isLoggedIn: false // Add state for login status
   };
 
   addToCart = (product) => {
-    console.log(`Adding to cart: ${product.desc}, Quantity: ${product.value}`);
     this.setState(prevState => {
       const cart = [...prevState.cart];
       const itemIndex = cart.findIndex(item => item.id === product.id);
       if (itemIndex > -1) {
-        // Increment the quantity by the selected value
         cart[itemIndex].value += product.value;
       } else {
-        // Add the product to the cart with the selected quantity
         cart.push({ ...product });
       }
 
-      // Reset the product value in the main product list
       const products = prevState.products.map(p => {
         if (p.id === product.id) {
-          return { ...p, value: 0 }; // Reset value to 0 after adding to cart
+          return { ...p, value: 0 };
         }
         return p;
       });
 
-      console.log('Updated Cart:', cart);
       return { cart, products };
     });
   };
@@ -65,8 +63,11 @@ class App extends Component {
     this.setState({ showModal: false, activeProduct: null });
   };
 
+  handleLogin = () => {
+    this.setState({ isLoggedIn: true });
+  };
+
   render() {
-    // Calculate the total quantity of items in the cart
     const cartLength = this.state.cart.reduce((acc, item) => acc + item.value, 0);
 
     return (
@@ -83,7 +84,16 @@ class App extends Component {
                 openModal={this.openModal}
               />
             } />
-            <Route path="/cart" element={<Cart cartItems={this.state.cart} />} />
+            <Route path="/cart" element={
+              <Cart 
+                cartItems={this.state.cart} 
+                isLoggedIn={this.state.isLoggedIn}
+              />
+            } />
+            <Route path="/signin" element={<SignIn onLogin={this.handleLogin} />} />
+            <Route path="/checkout" element={
+              this.state.isLoggedIn ? <Checkout /> : <SignIn onLogin={this.handleLogin} />
+            } />
           </Routes>
           {this.state.showModal && (
             <div className="modal">
