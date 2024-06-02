@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import Product from './product';
 
 const DisplayProducts = ({ products, onAddToCart, onSubtract, onAdd, openModal }) => {
   const [show, setShow] = useState(false);
   const [activeProduct, setActiveProduct] = useState({});
+  const [sortOption, setSortOption] = useState('normal');
 
   const handleClose = () => setShow(false);
   const handleShow = (product) => {
@@ -12,24 +13,43 @@ const DisplayProducts = ({ products, onAddToCart, onSubtract, onAdd, openModal }
     setShow(true);
   };
 
+  const handleSortChange = (e) => {
+    setSortOption(e.target.value);
+  };
+
+  const sortedProducts = [...products];
+  switch (sortOption) {
+    case 'lowest':
+      sortedProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'highest':
+      sortedProducts.sort((a, b) => b.price - a.price);
+      break;
+    default:
+      sortedProducts.sort((a, b) => a.id - b.id);
+  }
+
   return (
     <div className="container mt-3">
-      {products.map(product => (
+      <div className="row mb-3 justify-content-center">
+        <div className="col-md-6 text-center">
+          <Form.Group controlId="sortSelect" className="d-inline-block">
+            <Form.Label className="mr-2">Sort Price By:</Form.Label>
+            <Form.Control as="select" value={sortOption} onChange={handleSortChange} className="d-inline-block w-auto">
+              <option value="normal">Normal</option>
+              <option value="lowest">Lowest</option>
+              <option value="highest">Highest</option>
+            </Form.Control>
+          </Form.Group>
+        </div>
+      </div>
+      {sortedProducts.map(product => (
         <Product
           key={product.id}
           {...product}
-          onAddToCart={() => {
-            console.log(`onAddToCart called for product ID: ${product.id}, Quantity: ${product.value}`);
-            onAddToCart(product);
-          }}
-          onAdd={() => {
-            console.log(`onAdd called for product ID: ${product.id}`);
-            onAdd(product.id);
-          }}
-          onSubtract={() => {
-            console.log(`onSubtract called for product ID: ${product.id}`);
-            onSubtract(product.id);
-          }}
+          onAddToCart={() => onAddToCart(product)}
+          onAdd={() => onAdd(product.id)}
+          onSubtract={() => onSubtract(product.id)}
           openModal={() => handleShow(product)}
         />
       ))}

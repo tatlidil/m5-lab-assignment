@@ -7,7 +7,7 @@ import DisplayProducts from './components/displayProducts';
 import Cart from './components/cart';
 import SignIn from './components/SignIn';
 import Checkout from './components/Checkout';
-import products from './productData';
+import { products } from './productData';
 
 class App extends Component {
   state = {
